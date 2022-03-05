@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128pt" height="85pt" viewBox="0 0 128 85" version="1.1">
+<defs>
+<clipPath id="clip1">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+<clipPath id="clip2">
+  <path d="M 42 9 L 127.679688 9 L 127.679688 19 L 42 19 Z M 42 9 "/>
+</clipPath>
+<clipPath id="clip3">
+  <path d="M 42 28 L 127.679688 28 L 127.679688 38 L 42 38 Z M 42 28 "/>
+</clipPath>
+<clipPath id="clip4">
+  <path d="M 0 47 L 127.679688 47 L 127.679688 57 L 0 57 Z M 0 47 "/>
+</clipPath>
+<clipPath id="clip5">
+  <path d="M 0 66 L 127.679688 66 L 127.679688 76 L 0 76 Z M 0 66 "/>
+</clipPath>
+</defs>
+<g id="surface437">
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(5.097961%,36.862183%,68.626404%);fill-opacity:1;" d="M 0 85 L 0 0 L 127.5 0 L 127.5 85 Z M 0 85 "/>
+</g>
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 23.613281 0 L 23.613281 51.945312 "/>
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 23.613281 L 47.222656 23.613281 "/>
+<g clip-path="url(#clip2)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 47.222656 14.167969 L 127.5 14.167969 "/>
+</g>
+<g clip-path="url(#clip3)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 47.222656 33.054688 L 127.5 33.054688 "/>
+</g>
+<g clip-path="url(#clip4)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 51.945312 L 127.5 51.945312 "/>
+</g>
+<g clip-path="url(#clip5)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:9.444445;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 70.832031 L 127.5 70.832031 "/>
+</g>
+</g>
+</svg>

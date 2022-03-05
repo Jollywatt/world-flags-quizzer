@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128pt" height="85pt" viewBox="0 0 128 85" version="1.1">
+<defs>
+<clipPath id="clip1">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+</defs>
+<g id="surface767">
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,20.783997%,50.195312%);fill-opacity:1;" d="M 127.5 0 L 0 0 L 0 85 Z M 127.5 0 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,58.430481%,26.274109%);fill-opacity:1;" d="M 0 85 L 127.5 85 L 127.5 0 Z M 0 85 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 0 85 L 127.5 0 Z M 0 85 "/>
+<path style="fill:none;stroke-width:25.216316;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 85 L 127.5 0 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 0 85 L 127.5 0 Z M 0 85 "/>
+<path style="fill:none;stroke-width:18.912237;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(82.351685%,6.274414%,20.391846%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 85 L 127.5 0 "/>
+</g>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,80.783081%,0%);fill-opacity:1;" d="M 25.5 9.207031 L 27.699219 15.164062 L 32.582031 11.105469 L 31.511719 17.363281 L 37.769531 16.292969 L 33.710938 21.175781 L 39.667969 23.375 L 33.710938 25.574219 L 37.769531 30.457031 L 31.511719 29.386719 L 32.582031 35.644531 L 27.699219 31.585938 L 25.5 37.542969 L 23.300781 31.585938 L 18.417969 35.644531 L 19.488281 29.386719 L 13.230469 30.457031 L 17.289062 25.574219 L 11.332031 23.375 L 17.289062 21.175781 L 13.230469 16.292969 L 19.488281 17.363281 L 18.417969 11.105469 L 23.300781 15.164062 Z M 25.5 9.207031 "/>
+<path style="fill-rule:evenodd;fill:rgb(99.998474%,80.783081%,0%);fill-opacity:1;stroke-width:1.260816;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,20.783997%,50.195312%);stroke-opacity:1;stroke-miterlimit:4;" d="M 33.292969 23.375 C 33.292969 27.679688 29.804688 31.167969 25.5 31.167969 C 21.195312 31.167969 17.707031 27.679688 17.707031 23.375 C 17.707031 19.070312 21.195312 15.582031 25.5 15.582031 C 29.804688 15.582031 33.292969 19.070312 33.292969 23.375 Z M 33.292969 23.375 "/>
+</g>
+</svg>

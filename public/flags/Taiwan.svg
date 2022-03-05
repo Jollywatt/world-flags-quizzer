@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128pt" height="85pt" viewBox="0 0 128 85" version="1.1">
+<defs>
+<clipPath id="clip1">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+</defs>
+<g id="surface1087">
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.606323%,0%,0%);fill-opacity:1;" d="M 0 85 L 0 0 L 127.5 0 L 127.5 85 Z M 0 85 "/>
+</g>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,58.430481%);fill-opacity:1;" d="M 0 0 L 63.75 0 L 63.75 42.5 L 0 42.5 Z M 0 0 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 36.125 21.25 L 31.875 37.1875 L 27.625 21.25 L 31.875 5.3125 Z M 31.875 25.5 L 47.8125 21.25 L 31.875 17 L 15.9375 21.25 Z M 31.875 25.5 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 35.554688 23.375 L 23.90625 35.050781 L 28.195312 19.125 L 39.84375 7.449219 Z M 29.75 24.929688 L 45.675781 29.21875 L 34 17.570312 L 18.074219 13.28125 Z M 29.75 24.929688 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 34 24.929688 L 18.074219 29.21875 L 29.75 17.570312 L 45.675781 13.28125 Z M 28.195312 23.375 L 39.84375 35.050781 L 35.554688 19.125 L 23.90625 7.449219 Z M 28.195312 23.375 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,58.430481%);fill-opacity:1;" d="M 40.90625 21.25 C 40.90625 26.238281 36.863281 30.28125 31.875 30.28125 C 26.886719 30.28125 22.84375 26.238281 22.84375 21.25 C 22.84375 16.261719 26.886719 12.21875 31.875 12.21875 C 36.863281 12.21875 40.90625 16.261719 40.90625 21.25 Z M 40.90625 21.25 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 39.84375 21.25 C 39.84375 25.652344 36.277344 29.21875 31.875 29.21875 C 27.472656 29.21875 23.90625 25.652344 23.90625 21.25 C 23.90625 16.847656 27.472656 13.28125 31.875 13.28125 C 36.277344 13.28125 39.84375 16.847656 39.84375 21.25 Z M 39.84375 21.25 "/>
+</g>
+</svg>

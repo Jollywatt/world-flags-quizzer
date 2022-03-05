@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128pt" height="85pt" viewBox="0 0 128 85" version="1.1">
+<defs>
+<clipPath id="clip1">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+<clipPath id="clip2">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 43 L 0 43 Z M 0 0 "/>
+</clipPath>
+<clipPath id="clip3">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+<clipPath id="clip4">
+  <path d="M 49 28 L 127.679688 28 L 127.679688 57 L 49 57 Z M 49 28 "/>
+</clipPath>
+<clipPath id="clip5">
+  <path d="M 0 0 L 127.679688 0 L 127.679688 85 L 0 85 Z M 0 0 "/>
+</clipPath>
+<clipPath id="clip6">
+  <path d="M 55 34 L 127.679688 34 L 127.679688 51 L 55 51 Z M 55 34 "/>
+</clipPath>
+</defs>
+<g id="surface1027">
+<g clip-path="url(#clip1)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,13.725281%,58.430481%);fill-opacity:1;" d="M 0 85 L 0 0 L 127.5 0 L 127.5 85 Z M 0 85 "/>
+</g>
+<g clip-path="url(#clip2)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(87.057495%,21.960449%,19.215393%);fill-opacity:1;" d="M 0 0 L 0 42.5 L 127.5 42.5 L 127.5 0 Z M 0 0 "/>
+</g>
+<g clip-path="url(#clip3)" clip-rule="nonzero">
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 0 0 L 63.75 42.5 L 0 85 Z M 63.75 42.5 L 127.5 42.5 Z M 63.75 42.5 "/>
+<path style="fill:none;stroke-width:28.333333;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 0 L 63.75 42.5 L 0 85 "/>
+</g>
+<g clip-path="url(#clip4)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:28.333333;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 63.75 42.5 L 127.5 42.5 "/>
+</g>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 0 0 L 63.75 42.5 L 0 85 Z M 0 0 "/>
+<g clip-path="url(#clip5)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:28.333333;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(99.998474%,71.37146%,7.058716%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 0 L 63.75 42.5 L 0 85 "/>
+<path style="fill:none;stroke-width:16.575;stroke-linecap:square;stroke-linejoin:miter;stroke:rgb(99.998474%,99.998474%,99.998474%);stroke-opacity:1;stroke-miterlimit:4;" d="M 10.707031 0 L 74.457031 42.5 L 10.707031 85 "/>
+<path style="fill:none;stroke-width:17.000001;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,47.842407%,30.195618%);stroke-opacity:1;stroke-miterlimit:4;" d="M 0 0 L 63.75 42.5 L 0 85 "/>
+</g>
+<g clip-path="url(#clip6)" clip-rule="nonzero">
+<path style="fill:none;stroke-width:17.000001;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,47.842407%,30.195618%);stroke-opacity:1;stroke-miterlimit:4;" d="M 63.75 42.5 L 127.5 42.5 "/>
+</g>
+</g>
+</svg>
