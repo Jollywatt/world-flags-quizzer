@@ -5,10 +5,11 @@ import Alert from '@mui/material/Alert';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
+// import Collapse from '@mui/material/Collapse';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
+import Switch from '@mui/material/Switch';
 
 import Globe from 'react-globe.gl';
 
@@ -29,7 +30,7 @@ function weightedRandom(weights) {
 	}
 }
 
-function showCountry(country) {
+function showCountryOnGlobe(country) {
 	window.globe.pointOfView({
 		lat: country.coords[0],
 		lng: country.coords[1],
@@ -37,58 +38,90 @@ function showCountry(country) {
 	}, 1.5e3)
 }
 
+
+
 function App() {
 
 	const [currentCountry, setCurrentCountry] = React.useState(countryData[154])
 	const [input, setInput] = React.useState(null)
-	const [open, setOpen] = React.useState(false);
-	const [correct, setCorrect] = React.useState(false);
-	const [hint, setHint] = React.useState(false);
-	const [places, setPlaces] = React.useState(null);
-
+	const [correct, setCorrect] = React.useState(null);
+	const [message, setMessage] = React.useState(false)
+	const [knowsFlag, setKnowsFlag] = React.useState(true)
 
 
 	function chooseRandomFlag() {
-		let weights = countryData.map(d => Math.min(d.pop, 1e7))
+		let weights = countryData.map(d => (
+			d.correctCount > 0 ? 0 : Math.min(d.pop, 1e70)
+		))
 		let i = weightedRandom(weights)
+		countryData[i].onCorrect = () => {
+			countryData[i].correctCount = (countryData[i].correctCount || 0) + 1
+		}
 		setCurrentCountry(countryData[i])
-		showCountry(countryData[i])
-		setOpen(false)
+		setCorrect(null)
 		setInput(null)
+		setMessage(false)
+		setKnowsFlag(true)
+
+		showCountryOnGlobe(countryData[i])
 	}
 
 
+	function showSelected() {
+		if (!input) return giveMessage("Select a country first")
+		setCurrentCountry(input)
+		showCountryOnGlobe(input)
+		setKnowsFlag(false)
+	}
+
+
+
+	React.useEffect(chooseRandomFlag, []) // runs when app loads
+
 	function checkAnswer(country) {
-		setOpen(true)
+		if (!country) return
+
 		if (country === currentCountry) {
 			setCorrect(true)
 			setTimeout(chooseRandomFlag, 1e3)
+			if (knowsFlag) currentCountry.onCorrect()
 
 		} else {
 			setCorrect(false)
+			setKnowsFlag(false)
 		}
 	}
 
-	function getHint() {
-		setHint(currentCountry.name)
-		setTimeout(() => setHint(false), 2e3)
+	function giveMessage(message) {
+		setMessage(message)
+		setTimeout(() => setMessage(false), 2e3)
 	}
 
-	const globeEl = <Globe
-		ref={el => window.globe ||= el}
-		globeImageUrl="/earth-day.jpg"
-		backgroundColor="white"
-		width={300}
-		height={200}
+	function giveHint(message) {
+		giveMessage(currentCountry.name)
+		setKnowsFlag(false)
+	}
 
-		labelsData={[currentCountry]}
-		labelLat={d => d.coords[0]}
-		labelLng={d => d.coords[1]}
-		labelText={d => ""}
-		labelDotRadius={d => Math.exp(Math.log10(d.pop)/4)}
-		labelColor={() => 'rgba(255, 255, 255, 0.5)'}
-		labelResolution={1}
-	/>
+	const globeEl = <div className="globe">
+		<Globe
+			ref={el => window.globe ||= el}
+			globeImageUrl={`${process.env.PUBLIC_URL}/earth-day.jpg`}
+			backgroundColor="white"
+			width={300}
+			height={250}
+
+			labelsData={[currentCountry]}
+			labelLat={d => d.coords[0]}
+			labelLng={d => d.coords[1]}
+			labelText={d => ""}
+			labelDotRadius={d => Math.exp(Math.log10(d.pop)/4)}
+			labelColor={() => 'rgba(255, 255, 255, 0.5)'}
+			labelResolution={1}
+		/>
+	</div>
+
+	let changedByEnterKey = false
+	console.log("Falsing")
 
 	const countryInputEl = <Autocomplete
 		id="country-select"
@@ -96,7 +129,15 @@ function App() {
 		autoHighlight
 		getOptionLabel={(country) => country.name}
 		renderOption={(props, country) => (
-			<Box component="li" {...props}>
+			<Box component="li" {...props}
+				sx={ country.correctCount ? {
+					color: 'green',
+					'&::before': {
+						content: '"✔︎"',
+						paddingRight: 1
+					}
+				} : {}}
+			>
 				{country.name}
 				<div className="population-label"
 				>{bigNumberFormatter.format(country.pop)}</div>
@@ -104,7 +145,7 @@ function App() {
 		)}
 		renderInput={(params) => (
 			<TextField {...params}
-				label={hint || "Choose a country"}
+				label={message || "Choose a country"}
 				inputProps={{
 					...params.inputProps,
 					autoComplete: 'new-password', // disable autocomplete and autofill
@@ -114,14 +155,16 @@ function App() {
 		value={input}
 		onChange={(event, country) => {
 			setInput(country)
-			checkAnswer(country)
+			if (changedByEnterKey) checkAnswer(country)
+			changedByEnterKey = false
 		}}
 		onKeyDown={(event) => {
-			setOpen(false)
 			if (event.key === '?') {
 				event.defaultMuiPrevented = true;
-				getHint()
+				giveHint()
 				event.preventDefault()
+			} else if (event.key === 'Enter') {
+				changedByEnterKey = true
 			}
 		}}
 	/>
@@ -129,7 +172,7 @@ function App() {
 	const flagEl = <div className="flag-wrapper">
 		<img
 			className="flag"
-			src={`/flags/${currentCountry.name}.svg`}
+			src={`${process.env.PUBLIC_URL}/flags/${currentCountry.name}.svg`}
 			title={currentCountry.name}
 			alt=""
 		/>
@@ -137,6 +180,28 @@ function App() {
 
 	return (
 		<div className="App">
+			<Snackbar
+				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+				open={correct === true && knowsFlag}
+			>
+				<Alert elevation={4} severity="success">Memorized!</Alert>
+			</Snackbar>
+			<Snackbar
+				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+				open={correct === true && !knowsFlag}
+			>
+				<Alert elevation={4} severity="success">Correct</Alert>
+			</Snackbar>
+			<Snackbar
+				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+				open={correct === false}
+				autoHideDuration={1e3}
+				onClose={() => setCorrect(null)}
+			>
+				<Alert elevation={4} severity="error">
+					Incorrect
+				</Alert>
+			</Snackbar>
 			<Stack direction="column">
 				<Stack
 					direction="column"
@@ -146,39 +211,36 @@ function App() {
 						margin: 'auto',
 					}}
 				>
-					<h1 style={{marginBottom: 0}}>Flag Quizzer</h1>
 					{flagEl}
 					<Stack direction="row"
 						justifyContent="space-between"
 					>
 						<Button
-							variant="outlined"
+							// variant="outlined"
 							onClick={chooseRandomFlag}
 						>New Flag</Button>
 						<Button
-							variant="outlined"
-							onClick={getHint}
-						>Hint</Button>
+							// variant="contained"
+							onClick={showSelected}
+						>Show flag</Button>
 					</Stack>
+
 					{countryInputEl}
-					{/*<Collapse in={open}>
-						<Alert severity={correct ? "success" : "error"}>
-							{correct ? "Correct" : "Incorrect"}
-						</Alert>
-					</Collapse>*/}
-					<Snackbar open={open}
-						anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+
+					<Stack direction="row"
+						justifyContent="space-between"
 					>
-						<Alert severity={correct ? "success" : "error"} elevation={24}>
-							{correct ? "Correct" : "Incorrect"}
-						</Alert>
-					</Snackbar>
-					<Button
-						variant="outlined"
-						onClick={() => checkAnswer(input)}
-					>Check</Button>
+						<Button
+							variant="contained"
+							onClick={() => checkAnswer(input)}
+						>Check</Button>
+						<Button
+							onClick={() => giveHint()}
+						>Show country</Button>
+					</Stack>
+
 					{globeEl}
-					
+
 				</Stack>
 			</Stack>
 		</div>
