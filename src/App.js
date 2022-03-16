@@ -1,23 +1,31 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 
-import Alert from '@mui/material/Alert';
-import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-// import Collapse from '@mui/material/Collapse';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import Switch from '@mui/material/Switch';
+import {
+	Alert,
+	Autocomplete,
+	Box,
+	Button,
+	Collapse,
+	Stack,
+	TextField,
+	Snackbar,
+	Switch,
+	FormLabel,
+	Typography,
+} from '@mui/material'
 
-import Globe from 'react-globe.gl';
+import Globe from 'react-globe.gl'
 
-import {countryData} from './countries.js';
+import {countryData, worldPopulation} from './countries.js'
 
 
 const bigNumberFormatter = Intl.NumberFormat('en', {
 	notation: 'compact'
+})
+const percentageFormatter = Intl.NumberFormat('en', {
+	notation: 'compact',
+	maximumSignificantDigits: 4,
 })
 
 
@@ -30,7 +38,7 @@ function weightedRandom(weights) {
 	}
 }
 
-function showCountryOnGlobe(country) {
+function showOnGlobe(country) {
 	window.globe.pointOfView({
 		lat: country.coords[0],
 		lng: country.coords[1],
@@ -47,15 +55,17 @@ function App() {
 	const [correct, setCorrect] = React.useState(null);
 	const [message, setMessage] = React.useState(false)
 	const [knowsFlag, setKnowsFlag] = React.useState(true)
+	const [userProgress, setUserProgress] = React.useState({})
 
 
 	function chooseRandomFlag() {
 		let weights = countryData.map(d => (
-			d.correctCount > 0 ? 0 : Math.min(d.pop, 1e70)
+			d.correctCount > 0 ? 0 : Math.min(d.pop, 1e80)
 		))
 		let i = weightedRandom(weights)
 		countryData[i].onCorrect = () => {
 			countryData[i].correctCount = (countryData[i].correctCount || 0) + 1
+			calculateUserProgress()
 		}
 		setCurrentCountry(countryData[i])
 		setCorrect(null)
@@ -63,20 +73,21 @@ function App() {
 		setMessage(false)
 		setKnowsFlag(true)
 
-		showCountryOnGlobe(countryData[i])
+		showOnGlobe(countryData[i])
 	}
 
 
 	function showSelected() {
 		if (!input) return giveMessage("Select a country first")
 		setCurrentCountry(input)
-		showCountryOnGlobe(input)
+		showOnGlobe(input)
 		setKnowsFlag(false)
 	}
 
+	// runs when app loads
 
-
-	React.useEffect(chooseRandomFlag, []) // runs when app loads
+	React.useEffect(chooseRandomFlag, [])
+	React.useEffect(calculateUserProgress, [])
 
 	function checkAnswer(country) {
 		if (!country) return
@@ -92,15 +103,26 @@ function App() {
 		}
 	}
 
-	function giveMessage(message) {
-		setMessage(message)
-		setTimeout(() => setMessage(false), 2e3)
+	function giveMessage(text) {
+		setMessage(text)
+		setTimeout(() => setMessage(false), 3e3)
 	}
 
-	function giveHint(message) {
-		giveMessage(currentCountry.name)
+	function giveHint(text) {
+		if (message === false) giveMessage(currentCountry.name)
+		showOnGlobe(currentCountry)
 		setKnowsFlag(false)
 	}
+
+	function calculateUserProgress() {
+		let flagsMemorized = countryData.filter(country => country.correctCount > 0)
+		let popMemorized = flagsMemorized.map(country => country.pop).reduce((a, b) => a + b, 0)
+		setUserProgress({
+			flags: flagsMemorized.length,
+			pop: popMemorized/worldPopulation,
+		})
+	}
+
 
 	const globeEl = <div className="globe">
 		<Globe
@@ -121,7 +143,6 @@ function App() {
 	</div>
 
 	let changedByEnterKey = false
-	console.log("Falsing")
 
 	const countryInputEl = <Autocomplete
 		id="country-select"
@@ -177,6 +198,7 @@ function App() {
 			alt=""
 		/>
 	</div>
+
 
 	return (
 		<div className="App">
@@ -241,6 +263,21 @@ function App() {
 
 					{globeEl}
 
+					<Box>
+						<FormLabel>
+							{userProgress.flags} of {countryData.length} flags memorized
+							<br/>
+							{percentageFormatter.format(userProgress.pop*100)}% of world population
+						</FormLabel>
+						<Button
+							onClick={() => {
+								countryData.forEach(country => {
+									country.correctCount = 0
+								})
+								calculateUserProgress()
+							}}
+						>Reset progress</Button>
+					</Box>
 				</Stack>
 			</Stack>
 		</div>

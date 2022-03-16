@@ -77,7 +77,7 @@ const countryData = [
 	{name: "French Polynesia", pop: 280904, coords: [-15., -140.]},
 	{name: "Gabon", pop: 2225728, coords: [-1., 11.75]},
 	{name: "Gambia", pop: 2416664, coords: [13.466666666666667, -16.566666666666666]},
-	{name: "Gaza Strip", pop: 1763387, coords: [31.41667, 34.333]},
+	// {name: "Gaza Strip", pop: 1763387, coords: [31.41667, 34.333]},
 	{name: "Georgia", pop: 3989175, coords: [42., 43.5]},
 	{name: "Germany", pop: 83783945, coords: [51., 9.]},
 	{name: "Ghana", pop: 31072945, coords: [8., -2.]},
@@ -165,6 +165,7 @@ const countryData = [
 	{name: "Oman", pop: 5106622, coords: [21., 57.]},
 	{name: "Pakistan", pop: 220892331, coords: [30., 70.]},
 	{name: "Palau", pop: 18092, coords: [7.5, 134.5]},
+	{name: "Palestine", pop: 4803000, coords: [31.7, 34.8]},
 	{name: "Panama", pop: 4314768, coords: [9., -80.]},
 	{name: "Papua New Guinea", pop: 8947027, coords: [-6., 147.]},
 	{name: "Paraguay", pop: 7132530, coords: [-23., -58.]},
@@ -238,8 +239,8 @@ const countryData = [
 	{name: "Venezuela", pop: 28435943, coords: [8., -66.]},
 	{name: "Vietnam", pop: 97338583, coords: [16.17, 107.83]},
 	// {name: "Wallis and Futuna Islands", pop: 11246, coords: [-13.3, -176.2]},
-	{name: "West Bank", pop: 2731052, coords: [32., 35.25]},
-	{name: "Western Sahara", pop: 597330, coords: [24.5, -13.]},
+	// {name: "West Bank", pop: 2731052, coords: [32., 35.25]},
+	// {name: "Western Sahara", pop: 597330, coords: [24.5, -13.]},
 	{name: "Yemen", pop: 29825968, coords: [15., 48.]},
 	{name: "Zambia", pop: 18383956, coords: [-15., 30.]},
 	{name: "Zimbabwe", pop: 14862927, coords: [-20., 30.]},
@@ -247,4 +248,6 @@ const countryData = [
 	{name: "Scotland", pop: 5405000, coords: [56.7035, -4.05797]},
 ]
 
-export {countryData}
+let worldPopulation = countryData.map(country => country.pop).reduce((a, b) => a + b, 0)
+
+export {countryData, worldPopulation}

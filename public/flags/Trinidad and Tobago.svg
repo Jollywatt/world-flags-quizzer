@@ -1,20 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128pt" height="77pt" viewBox="0 0 128 77" version="1.1">
-<defs>
-<clipPath id="clip1">
-  <path d="M 0 0 L 128 0 L 128 76.800781 L 0 76.800781 Z M 0 0 "/>
-</clipPath>
-<clipPath id="clip2">
-  <path d="M 6 0 L 122 0 L 122 76.800781 L 6 76.800781 Z M 6 0 "/>
-</clipPath>
-</defs>
-<g id="surface1122">
-<g clip-path="url(#clip1)" clip-rule="nonzero">
-<path style=" stroke:none;fill-rule:evenodd;fill:rgb(80.783081%,6.666565%,14.901733%);fill-opacity:1;" d="M 0 76.800781 L 0 0 L 128 0 L 128 76.800781 Z M 0 76.800781 "/>
-<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 0 0 L 88.851562 76.800781 L 128 76.800781 L 39.148438 0 Z M 0 0 "/>
-</g>
-<g clip-path="url(#clip2)" clip-rule="nonzero">
-<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 6.523438 0 L 95.375 76.800781 L 121.476562 76.800781 L 32.625 0 Z M 6.523438 0 "/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000pt" height="600pt" viewBox="0 0 1000 600" version="1.1">
+<g id="surface1195">
+<rect x="0" y="0" width="1000" height="600" style="fill:rgb(80.783081%,6.666565%,14.901733%);fill-opacity:1;stroke:none;"/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(99.998474%,99.998474%,99.998474%);fill-opacity:1;" d="M 0 0 L 694.160156 600 L 1000 600 L 305.839844 0 Z M 0 0 "/>
+<path style=" stroke:none;fill-rule:evenodd;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 50.976562 0 L 745.128906 600 L 949.023438 600 L 254.871094 0 Z M 50.976562 0 "/>
 </g>
 </svg>
