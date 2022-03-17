@@ -7,11 +7,12 @@ import {
 	Box,
 	Button,
 	Collapse,
-	Stack,
-	TextField,
-	Snackbar,
-	Switch,
 	FormLabel,
+	Grid,
+	Snackbar,
+	Stack,
+	Switch,
+	TextField,
 	Typography,
 } from '@mui/material'
 
@@ -65,7 +66,6 @@ function App() {
 		setCurrentCountry(countryData[i])
 		showOnGlobe(countryData[i])
 
-		setCorrect(null)
 		setInput(null)
 		setMessage(false)
 		setKnowsFlag(true)
@@ -88,7 +88,7 @@ function App() {
 
 		if (country === currentCountry) {
 			setCorrect(true)
-			setTimeout(chooseRandomFlag, 1e3)
+			setTimeout(chooseRandomFlag, 0.75e3)
 			memorizeCountry(country.name)
 
 		} else {
@@ -212,71 +212,76 @@ function App() {
 		})()}
 	</Box>
 
-	return <div className="App">
+	return <Stack className="App"
+		alignItems={{ xs: 'center', md: 'flex-end'}}
+		justifyContent="center"
+		direction={{ xs: 'column', md: 'row' }}
+		spacing={4}
+		>
+
+		<Stack direction="column" sx={{width: 300}} spacing={2}>
+
+			{flagEl}
+
+			<Stack direction="row" justifyContent="space-between">
+				<Button onClick={chooseRandomFlag}>New Flag</Button>
+				<Button onClick={showSelected}>Show flag</Button>
+			</Stack>
+
+			{countryInputEl}
+
+			<Stack direction="row" justifyContent="space-between">
+				<Button variant="contained" onClick={() => checkAnswer(input)}>Check</Button>
+				<Button onClick={() => giveHint()}>Show country</Button>
+			</Stack>
+
+		</Stack>
+
+		<Stack direction="column" sx={{width: 300}} spacing={2}>
+
+			{globeEl}
+
+			{progressIndicator}
+
+			<Button
+				color="error"
+				onClick={() => {
+					setUserProgress(new Set())
+					localStorage.setItem('memorizedCountries', '')
+				}}
+			>Reset progress</Button>
+
+		</Stack>
+
 		<Snackbar
 			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
 			open={correct === true && knowsFlag}
+			autoHideDuration={1.25e3}
+			onClose={() => setCorrect(null)}
+
 		>
 			<Alert elevation={4} severity="success">Memorized!</Alert>
 		</Snackbar>
 		<Snackbar
 			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
 			open={correct === true && !knowsFlag}
+			autoHideDuration={1.25e3}
+			onClose={() => setCorrect(null)}
+
 		>
 			<Alert elevation={4} severity="success">Correct</Alert>
 		</Snackbar>
 		<Snackbar
 			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
 			open={correct === false}
-			autoHideDuration={1e3}
+			autoHideDuration={1.25e3}
 			onClose={() => setCorrect(null)}
 		>
 			<Alert elevation={4} severity="error">
 				Incorrect
 			</Alert>
 		</Snackbar>
-		<Stack direction="column">
-			<Stack
-				direction="column"
-				spacing={3}
-				sx={{
-					width: 300,
-					margin: 'auto',
-				}}
-			>
-				{flagEl}
-				<Stack direction="row"
-					justifyContent="space-between"
-				>
-					<Button onClick={chooseRandomFlag}>New Flag</Button>
-					<Button onClick={showSelected}>Show flag</Button>
-				</Stack>
-
-				{countryInputEl}
-
-				<Stack direction="row"
-					justifyContent="space-between"
-				>
-					<Button variant="contained" onClick={() => checkAnswer(input)}>Check</Button>
-					<Button onClick={() => giveHint()}>Show country</Button>
-				</Stack>
-
-				{globeEl}
-
-				{progressIndicator}
-
-				<Button
-					sx={{
-						color: 'error.main'
-					}}
-					onClick={() => {
-						setUserProgress(new Set())
-						localStorage.setItem('memorizedCountries', '')
-					}}
-				>Reset progress</Button>
-			</Stack>
-		</Stack>
-	</div>
+	</Stack>
 }
 
 export default App;
