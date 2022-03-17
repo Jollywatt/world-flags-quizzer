@@ -9,12 +9,17 @@ import {
 	Collapse,
 	FormLabel,
 	Grid,
+	Grow,
 	Snackbar,
 	Stack,
 	Switch,
 	TextField,
 	Typography,
+	makeStyles,
 } from '@mui/material'
+
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
 
 import Globe from 'react-globe.gl'
 
@@ -57,6 +62,7 @@ function App() {
 	const [userProgress, setUserProgress] = React.useState(new Set())
 	const [currentCountry, setCurrentCountry] = React.useState(countryData[0])
 
+	const { enqueueSnackbar } = useSnackbar()
 
 	function chooseRandomFlag() {
 		let weights = countryData.map(d => (
@@ -90,10 +96,12 @@ function App() {
 			setCorrect(true)
 			setTimeout(chooseRandomFlag, 0.75e3)
 			memorizeCountry(country.name)
+			enqueueSnackbar({message: knowsFlag ? "Memorized!" : "Correct",  variant: "success" })
 
 		} else {
 			setCorrect(false)
 			setKnowsFlag(false)
+			enqueueSnackbar({message: "Incorrect", variant: "error" })
 		}
 	}
 
@@ -115,7 +123,7 @@ function App() {
 	React.useEffect(() => {
 		// load saved progress
 		let memorizedCountries = localStorage.getItem('memorizedCountries')
-		let userProgress = memorizedCountries === '' ? new Set() : new Set(memorizedCountries.split('|'))
+		let userProgress = memorizedCountries ? new Set(memorizedCountries.split('|')) : new Set()
 		setUserProgress(userProgress)
 		chooseRandomFlag()
 	}, [])
@@ -213,11 +221,11 @@ function App() {
 	</Box>
 
 	return <Stack className="App"
-		alignItems={{ xs: 'center', md: 'flex-end'}}
-		justifyContent="center"
-		direction={{ xs: 'column', md: 'row' }}
-		spacing={4}
-		>
+			alignItems={{ xs: 'center', md: 'flex-end'}}
+			justifyContent="center"
+			direction={{ xs: 'column', md: 'row' }}
+			spacing={4}
+			>
 
 		<Stack direction="column" sx={{width: 300}} spacing={2}>
 
@@ -252,36 +260,20 @@ function App() {
 			>Reset progress</Button>
 
 		</Stack>
-
-		<Snackbar
-			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-			open={correct === true && knowsFlag}
-			autoHideDuration={1.25e3}
-			onClose={() => setCorrect(null)}
-
-		>
-			<Alert elevation={4} severity="success">Memorized!</Alert>
-		</Snackbar>
-		<Snackbar
-			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-			open={correct === true && !knowsFlag}
-			autoHideDuration={1.25e3}
-			onClose={() => setCorrect(null)}
-
-		>
-			<Alert elevation={4} severity="success">Correct</Alert>
-		</Snackbar>
-		<Snackbar
-			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-			open={correct === false}
-			autoHideDuration={1.25e3}
-			onClose={() => setCorrect(null)}
-		>
-			<Alert elevation={4} severity="error">
-				Incorrect
-			</Alert>
-		</Snackbar>
 	</Stack>
 }
 
-export default App;
+export default function IntegrationNotistack() {
+	return <SnackbarProvider maxSnack={1}
+		autoHideDuration={1.5e3}
+		anchorOrigin={{
+			vertical: 'top',
+			horizontal: 'center',
+		}}
+		TransitionComponent={Grow}
+		content={(_, {message, variant}) => (
+			<Alert elevation={4} severity={variant}>{message}</Alert>
+		)}>
+		<App/>
+	</SnackbarProvider>
+}
