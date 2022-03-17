@@ -16,6 +16,8 @@ import {
 	TextField,
 	Typography,
 	makeStyles,
+	ThemeProvider,
+	createTheme,
 } from '@mui/material'
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
@@ -51,6 +53,15 @@ function showOnGlobe(country) {
 	}, 1.5e3)
 }
 
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 660,
+    },
+  },
+});
 
 
 function App() {
@@ -221,9 +232,9 @@ function App() {
 	</Box>
 
 	return <Stack className="App"
-			alignItems={{ xs: 'center', md: 'flex-end'}}
+			alignItems={{ xs: 'center', sm: 'flex-end'}}
 			justifyContent="center"
-			direction={{ xs: 'column', md: 'row' }}
+			direction={{ xs: 'column', sm: 'row' }}
 			spacing={4}
 			>
 
@@ -274,6 +285,8 @@ export default function IntegrationNotistack() {
 		content={(_, {message, variant}) => (
 			<Alert elevation={4} severity={variant}>{message}</Alert>
 		)}>
-		<App/>
+		<ThemeProvider theme={theme}>
+			<App/>
+		</ThemeProvider>
 	</SnackbarProvider>
 }
