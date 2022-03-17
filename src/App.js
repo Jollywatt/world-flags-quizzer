@@ -24,7 +24,6 @@ const bigNumberFormatter = Intl.NumberFormat('en', {
 	notation: 'compact'
 })
 const percentageFormatter = Intl.NumberFormat('en', {
-	notation: 'compact',
 	maximumSignificantDigits: 4,
 })
 
@@ -50,32 +49,32 @@ function showOnGlobe(country) {
 
 function App() {
 
-	const [currentCountry, setCurrentCountry] = React.useState(countryData[154])
 	const [input, setInput] = React.useState(null)
 	const [correct, setCorrect] = React.useState(null);
 	const [message, setMessage] = React.useState(false)
 	const [knowsFlag, setKnowsFlag] = React.useState(true)
-	const [userProgress, setUserProgress] = React.useState({})
+	const [userProgress, setUserProgress] = React.useState(new Set())
+	const [currentCountry, setCurrentCountry] = React.useState(countryData[0])
 
 
 	function chooseRandomFlag() {
 		let weights = countryData.map(d => (
-			d.correctCount > 0 ? 0 : Math.min(d.pop, 1e80)
+			userProgress.has(d.name) ? 0 : Math.min(d.pop, 1e80)
 		))
 		let i = weightedRandom(weights)
-		countryData[i].onCorrect = () => {
-			countryData[i].correctCount = (countryData[i].correctCount || 0) + 1
-			calculateUserProgress()
-		}
 		setCurrentCountry(countryData[i])
+		showOnGlobe(countryData[i])
+
 		setCorrect(null)
 		setInput(null)
 		setMessage(false)
 		setKnowsFlag(true)
-
-		showOnGlobe(countryData[i])
 	}
-
+ 
+	function memorizeCountry(name) {
+		setUserProgress(userProgress.add(name))
+		localStorage.setItem('memorizedCountries', Array.from(userProgress).join('|'))
+	}
 
 	function showSelected() {
 		if (!input) return giveMessage("Select a country first")
@@ -84,18 +83,13 @@ function App() {
 		setKnowsFlag(false)
 	}
 
-	// runs when app loads
-
-	React.useEffect(chooseRandomFlag, [])
-	React.useEffect(calculateUserProgress, [])
-
 	function checkAnswer(country) {
-		if (!country) return
+		if (!country) return giveMessage("Select a country first")
 
 		if (country === currentCountry) {
 			setCorrect(true)
 			setTimeout(chooseRandomFlag, 1e3)
-			if (knowsFlag) currentCountry.onCorrect()
+			memorizeCountry(country.name)
 
 		} else {
 			setCorrect(false)
@@ -114,14 +108,20 @@ function App() {
 		setKnowsFlag(false)
 	}
 
-	function calculateUserProgress() {
-		let flagsMemorized = countryData.filter(country => country.correctCount > 0)
-		let popMemorized = flagsMemorized.map(country => country.pop).reduce((a, b) => a + b, 0)
-		setUserProgress({
-			flags: flagsMemorized.length,
-			pop: popMemorized/worldPopulation,
-		})
-	}
+
+
+
+	// runs when app loads
+	React.useEffect(() => {
+		// load saved progress
+		let memorizedCountries = localStorage.getItem('memorizedCountries')
+		let userProgress = memorizedCountries === '' ? new Set() : new Set(memorizedCountries.split('|'))
+		setUserProgress(userProgress)
+		chooseRandomFlag()
+	}, [])
+
+
+	let submittedWithEnterKey = false
 
 
 	const globeEl = <div className="globe">
@@ -142,7 +142,14 @@ function App() {
 		/>
 	</div>
 
-	let changedByEnterKey = false
+	const flagEl = <div className="flag-wrapper">
+		<img
+			className="flag"
+			src={`${process.env.PUBLIC_URL}/flags/${currentCountry.name}.svg`}
+			title={currentCountry.name}
+			alt=""
+		/>
+	</div>
 
 	const countryInputEl = <Autocomplete
 		id="country-select"
@@ -151,7 +158,7 @@ function App() {
 		getOptionLabel={(country) => country.name}
 		renderOption={(props, country) => (
 			<Box component="li" {...props}
-				sx={ country.correctCount ? {
+				sx={ userProgress.has(country.name) ? {
 					color: 'green',
 					'&::before': {
 						content: '"✔︎"',
@@ -176,8 +183,8 @@ function App() {
 		value={input}
 		onChange={(event, country) => {
 			setInput(country)
-			if (changedByEnterKey) checkAnswer(country)
-			changedByEnterKey = false
+			if (submittedWithEnterKey) checkAnswer(country)
+			submittedWithEnterKey = false
 		}}
 		onKeyDown={(event) => {
 			if (event.key === '?') {
@@ -185,103 +192,91 @@ function App() {
 				giveHint()
 				event.preventDefault()
 			} else if (event.key === 'Enter') {
-				changedByEnterKey = true
+				submittedWithEnterKey = true
 			}
 		}}
 	/>
 
-	const flagEl = <div className="flag-wrapper">
-		<img
-			className="flag"
-			src={`${process.env.PUBLIC_URL}/flags/${currentCountry.name}.svg`}
-			title={currentCountry.name}
-			alt=""
-		/>
-	</div>
+	const progressIndicator = <Box>				
+		{(() => {
+			let popMemorized = countryData
+				.filter(country => userProgress.has(country.name))
+				.map(country => country.pop)
+				.reduce((a, b) => a + b, 0)
+			let pop = percentageFormatter.format(100*popMemorized/worldPopulation)
+			return <FormLabel>
+				{userProgress.size} of {countryData.length} flags memorized
+				<br/>
+				{pop}% of world population
+			</FormLabel>
+		})()}
+	</Box>
 
-
-	return (
-		<div className="App">
-			<Snackbar
-				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-				open={correct === true && knowsFlag}
+	return <div className="App">
+		<Snackbar
+			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+			open={correct === true && knowsFlag}
+		>
+			<Alert elevation={4} severity="success">Memorized!</Alert>
+		</Snackbar>
+		<Snackbar
+			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+			open={correct === true && !knowsFlag}
+		>
+			<Alert elevation={4} severity="success">Correct</Alert>
+		</Snackbar>
+		<Snackbar
+			anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+			open={correct === false}
+			autoHideDuration={1e3}
+			onClose={() => setCorrect(null)}
+		>
+			<Alert elevation={4} severity="error">
+				Incorrect
+			</Alert>
+		</Snackbar>
+		<Stack direction="column">
+			<Stack
+				direction="column"
+				spacing={3}
+				sx={{
+					width: 300,
+					margin: 'auto',
+				}}
 			>
-				<Alert elevation={4} severity="success">Memorized!</Alert>
-			</Snackbar>
-			<Snackbar
-				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-				open={correct === true && !knowsFlag}
-			>
-				<Alert elevation={4} severity="success">Correct</Alert>
-			</Snackbar>
-			<Snackbar
-				anchorOrigin={{vertical: 'top', horizontal: 'center'}}
-				open={correct === false}
-				autoHideDuration={1e3}
-				onClose={() => setCorrect(null)}
-			>
-				<Alert elevation={4} severity="error">
-					Incorrect
-				</Alert>
-			</Snackbar>
-			<Stack direction="column">
-				<Stack
-					direction="column"
-					spacing={3}
-					sx={{
-						width: 300,
-						margin: 'auto',
-					}}
+				{flagEl}
+				<Stack direction="row"
+					justifyContent="space-between"
 				>
-					{flagEl}
-					<Stack direction="row"
-						justifyContent="space-between"
-					>
-						<Button
-							// variant="outlined"
-							onClick={chooseRandomFlag}
-						>New Flag</Button>
-						<Button
-							// variant="contained"
-							onClick={showSelected}
-						>Show flag</Button>
-					</Stack>
-
-					{countryInputEl}
-
-					<Stack direction="row"
-						justifyContent="space-between"
-					>
-						<Button
-							variant="contained"
-							onClick={() => checkAnswer(input)}
-						>Check</Button>
-						<Button
-							onClick={() => giveHint()}
-						>Show country</Button>
-					</Stack>
-
-					{globeEl}
-
-					<Box>
-						<FormLabel>
-							{userProgress.flags} of {countryData.length} flags memorized
-							<br/>
-							{percentageFormatter.format(userProgress.pop*100)}% of world population
-						</FormLabel>
-						<Button
-							onClick={() => {
-								countryData.forEach(country => {
-									country.correctCount = 0
-								})
-								calculateUserProgress()
-							}}
-						>Reset progress</Button>
-					</Box>
+					<Button onClick={chooseRandomFlag}>New Flag</Button>
+					<Button onClick={showSelected}>Show flag</Button>
 				</Stack>
+
+				{countryInputEl}
+
+				<Stack direction="row"
+					justifyContent="space-between"
+				>
+					<Button variant="contained" onClick={() => checkAnswer(input)}>Check</Button>
+					<Button onClick={() => giveHint()}>Show country</Button>
+				</Stack>
+
+				{globeEl}
+
+				{progressIndicator}
+
+				<Button
+					sx={{
+						color: 'error.main'
+					}}
+					onClick={() => {
+						setUserProgress(new Set())
+						localStorage.setItem('memorizedCountries', '')
+					}}
+				>Reset progress</Button>
 			</Stack>
-		</div>
-	);
+		</Stack>
+	</div>
 }
 
 export default App;
