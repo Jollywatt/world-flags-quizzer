@@ -87,14 +87,14 @@ function App() {
 	}
 
 	function showSelected() {
-		if (!input) return giveMessage("Select a country first")
+		if (!input) return giveMessage("⚠️ Select a country first")
 		setCurrentCountry(input)
 		showOnGlobe(input)
 		setKnowsFlag(false)
 	}
 
 	function checkAnswer(country) {
-		if (!country) return giveMessage("Select a country first")
+		if (!country) return giveMessage("⚠️ Select a country first!")
 
 		if (country === currentCountry) {
 			setTimeout(chooseRandomFlag, 0.75e3)
@@ -112,7 +112,7 @@ function App() {
 
 	function giveMessage(text) {
 		setMessage(text)
-		setTimeout(() => setMessage(false), 3e3)
+		setTimeout(() => setMessage(false), 2e3)
 	}
 
 	function giveHint(text) {
@@ -142,6 +142,9 @@ function App() {
 	React.useEffect(() => {
       setTimeout(() => { // wait for scene to be populated (asynchronously)
         const directionalLight = globeRef.current.scene().children.find(obj3d => obj3d.type === 'DirectionalLight');
+
+        if (globeRef.current.scene().children.length >= 5) return // already added lights
+
         directionalLight && directionalLight.position.set(1, 0, 0); // change light position to see the specularMap's effect
         directionalLight.intensity = 0.6
 
@@ -259,15 +262,15 @@ function App() {
 			{flagEl}
 
 			<Stack direction="row" justifyContent="space-between">
-				<Button onClick={chooseRandomFlag}>New Flag</Button>
-				<Button onClick={showSelected}>Show flag</Button>
+				<Button onClick={() => giveHint()}>⬇︎ Show country</Button>
+				<Button onClick={showSelected}>⬆︎ Show flag</Button>
 			</Stack>
 
 			{countryInputEl}
 
 			<Stack direction="row" justifyContent="space-between">
+				<Button onClick={chooseRandomFlag}>Random</Button>
 				<Button variant="contained" onClick={() => checkAnswer(input)}>Check</Button>
-				<Button onClick={() => giveHint()}>Show country</Button>
 			</Stack>
 
 		</Stack>
