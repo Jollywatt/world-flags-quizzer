@@ -1,30 +1,23 @@
 import React from 'react'
-import './App.css'
 
 import {
 	Alert,
 	Autocomplete,
 	Box,
 	Button,
-	Collapse,
 	FormLabel,
-	Grid,
 	Grow,
-	Snackbar,
 	Stack,
-	Switch,
 	TextField,
-	Typography,
-	makeStyles,
 	ThemeProvider,
 	createTheme,
 } from '@mui/material'
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-
 import Globe from 'react-globe.gl'
 
+import './App.css'
 import {countryData, worldPopulation} from './countries.js'
 
 
@@ -46,7 +39,7 @@ function weightedRandom(weights) {
 }
 
 function showOnGlobe(country) {
-	window.globe.pointOfView({
+	window.globeRef.current.pointOfView({
 		lat: country.coords[0],
 		lng: country.coords[1],
 		altitude: 1.7,
@@ -67,7 +60,6 @@ const theme = createTheme({
 function App() {
 
 	const [input, setInput] = React.useState(null)
-	const [correct, setCorrect] = React.useState(null);
 	const [message, setMessage] = React.useState(false)
 	const [knowsFlag, setKnowsFlag] = React.useState(true)
 	const [userProgress, setUserProgress] = React.useState(new Set())
@@ -77,7 +69,8 @@ function App() {
 
 	function chooseRandomFlag() {
 		let weights = countryData.map(d => (
-			userProgress.has(d.name) ? 0 : Math.min(d.pop, 1e80)
+			// userProgress.has(d.name) ? 0 : Math.sqrt(d.pop)
+			userProgress.has(d.name) ? 0 : Math.min(d.pop, 2e8)
 		))
 		let i = weightedRandom(weights)
 		setCurrentCountry(countryData[i])
@@ -104,13 +97,14 @@ function App() {
 		if (!country) return giveMessage("Select a country first")
 
 		if (country === currentCountry) {
-			setCorrect(true)
 			setTimeout(chooseRandomFlag, 0.75e3)
-			memorizeCountry(country.name)
-			enqueueSnackbar({message: knowsFlag ? "Memorized!" : "Correct",  variant: "success" })
-
+			if (knowsFlag) {
+				memorizeCountry(country.name)
+				enqueueSnackbar({message: "Memorized!", variant: "success"})
+			} else {
+				enqueueSnackbar({message: "Correct", variant: "success"})
+			}
 		} else {
-			setCorrect(false)
 			setKnowsFlag(false)
 			enqueueSnackbar({message: "Incorrect", variant: "error" })
 		}
@@ -142,11 +136,33 @@ function App() {
 
 	let submittedWithEnterKey = false
 
+	const globeRef = React.useRef();
+	window.globeRef = globeRef
+
+	React.useEffect(() => {
+      setTimeout(() => { // wait for scene to be populated (asynchronously)
+        const directionalLight = globeRef.current.scene().children.find(obj3d => obj3d.type === 'DirectionalLight');
+        directionalLight && directionalLight.position.set(1, 0, 0); // change light position to see the specularMap's effect
+        directionalLight.intensity = 0.6
+
+        const ambientLight = globeRef.current.scene().children.find(obj3d => obj3d.type === 'AmbientLight');
+        ambientLight.intensity = 0.8
+
+        let d2 = window.d2 = directionalLight.clone()
+
+        d2.position.set(-1,1,1)
+        globeRef.current.scene().add(d2)
+
+      });
+    }, []);
 
 	const globeEl = <div className="globe">
 		<Globe
-			ref={el => window.globe ||= el}
+			ref={globeRef}
 			globeImageUrl={`${process.env.PUBLIC_URL}/earth-day.jpg`}
+			bumpImageUrl={`${process.env.PUBLIC_URL}/earth-topology.png`}
+			showAtmosphere={false}
+			showGraticules={true}
 			backgroundColor="white"
 			width={300}
 			height={250}
